@@ -1,0 +1,23 @@
+services:
+  ducky:
+    build: ./bot
+    container_name: ducky
+    restart: unless-stopped
+    
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 2500M
+    #     reservations:
+    #       memory: 2000M
+
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    
+    volumes:
+      - .:/app
+
+    ports:
+      - "8001:8001"

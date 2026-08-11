@@ -1,0 +1,31 @@
+# --- IDEs and Editors ---
+.vscode/
+.idea/
+
+# --- Environment and Secrets ---
+.env
+secrets.lua
+!example.secrets.lua
+gateway.json
+
+# --- Dependencies and Build Tools ---
+node_modules/
+deps/
+dist/
+luvi
+luvit
+lit
+
+# --- Database Files ---
+data.db
+data.db-journal
+data.db-shm
+data.db-wal
+data.b64
+sqlbackups/
+
+# --- Logs and Temp Files ---
+*.exe
+temp.lua
+discordia.log
+**/logs/

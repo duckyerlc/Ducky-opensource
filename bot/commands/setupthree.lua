@@ -1,0 +1,1675 @@
+-- setupthree.lua
+local slashCommand = tools.slashCommand("config", "Setup/configure Ducky for your server's needs.")
+
+return {
+	name = "setupthree",
+	description = "Setup/configure Ducky for your server's needs.",
+	aliases = {
+		"setup3",
+		"setupv3"
+	},
+	category = "Configuration",
+	slashCommand = nil,
+	requiredPermissions = {
+		"QUALITY_ASSURANCE",
+		"MANAGE_SERVER"
+	},
+	hybridCallback = function(interaction, args, slash)
+		-- local guild = interaction.guild
+		-- local success, config = sqldb:registerGuild(guild.id)
+
+		-- if not success then
+		-- 	return interaction:fail("Failed to initialize your server's configuration. Please try again later.", nil, true)
+		-- end
+
+		-- local plus = sqldb:plusGuild(guild)
+
+		-- local function modify(key, val)
+		-- 	val = (val == nil and "nil") or val
+
+		-- 	local success, err = sqldb:set(guild.id, {
+		-- 		[key] = val
+		-- 	}, "CONFIG_MODIFY_" .. key:upper(), interaction.member)
+
+		-- 	if success then
+		-- 		config = err
+		-- 		return true, err
+		-- 	end
+		-- end
+
+		-- local function insert(key, val)
+		-- 	local tbl = config[key] or {}
+		-- 	table.insert(tbl, val)
+		-- 	return modify(key, tbl)
+		-- end
+
+		-- local function remove(key, index)
+		-- 	local tbl = config[key] or {}
+		-- 	if type(index) == "number" then
+		-- 		table.remove(tbl, index)
+		-- 		return modify(key, tbl)
+		-- 	elseif type(index) == "function" then
+		-- 		for i, v in pairs(tbl) do
+		-- 			if index(v, i) then
+		-- 				table.remove(tbl, i)
+		-- 				return modify(key, tbl)
+		-- 			end
+		-- 		end
+		-- 	end
+		-- end
+
+		-- local function display(id, t, level, fail)
+		-- 	if ((not id) and (t ~= "boolean")) or (id == "") or ((type(id) == "table") and table.count(id) <= 0) then
+		-- 		return fail or "N/A"
+		-- 	end
+		-- 	level = level or 1
+
+		-- 	local space = "\n" .. string.rep(emojis.space, level) .. emojis.right
+
+		-- 	if type(t) == "function" then
+		-- 		return t(id, space, fail)
+		-- 	elseif t == "embed" then
+		-- 		return "Custom"
+		-- 	elseif t == "boolean" then
+		-- 		return (id and emojis.success) or emojis.fail
+		-- 	elseif t == "channel" then
+		-- 		return "<#" .. id .. ">"
+		-- 	elseif t == "role" then
+		-- 		if type(id) == "string" then
+		-- 			return "<@&" .. id .. ">"
+		-- 		else
+		-- 			return (table.count(id) > 0 and (space .. " " .. table.concatFn(id, space .. " ", function(role)
+		-- 				return "<@&" .. role .. ">"
+		-- 			end))) or fail
+		-- 		end
+		-- 	elseif t == "mentionable" then
+		-- 		if type(id) == "string" then
+		-- 			return fetchMentionable(id, guild)
+		-- 		else
+		-- 			return (table.count(id) > 0 and (space .. " " .. table.concatFn(id, space, function(v)
+		-- 				return fetchMentionable(v, guild)
+		-- 			end))) or fail
+		-- 		end
+		-- 	elseif t == "user" or t == "member" then
+		-- 		return "<@" .. id .. ">"
+		-- 	elseif t == "string" then
+		-- 		return tostring(id)
+		-- 	end
+
+		-- 	return "Unknown (" .. tostring(t) .. ", " .. tostring(id) .. ")"
+		-- end
+
+		-- local menu = interaction:loading()
+		-- local page = "home"
+
+		-- local variables = {
+		-- 	erlcserverstatusmessage = {
+		-- 		keys = {
+		-- 			["server.name"] = emojis.loading,
+		-- 			["server.players"] = emojis.loading,
+		-- 			["server.staff"] = emojis.loading,
+		-- 			["server.maxplayers"] = emojis.loading,
+		-- 			["server.queue"] = emojis.loading,
+		-- 			["server.code"] = emojis.loading,
+		-- 			["owner.name"] = emojis.loading,
+		-- 			["owner.display"] = emojis.loading,
+		-- 			["owner.id"] = emojis.loading,
+		-- 			["owner.profile"] = emojis.loading,
+		-- 			["owner.hyperlink"] = emojis.loading,
+		-- 			["team.dot"] = emojis.loading,
+		-- 			["team.fire"] = emojis.loading,
+		-- 			["team.police"] = emojis.loading,
+		-- 			["team.sheriff"] = emojis.loading,
+		-- 			["team.jail"] = emojis.loading,
+		-- 			["team.civilian"] = emojis.loading,
+		-- 			["timestamp"] = os.time()
+		-- 		},
+		-- 		display = emojis.right .. " **`{server.name}`:** The in-game server's name.\n" .. emojis.right .. " **`{server.players}`:** The in-game server's current playercount.\n" .. emojis.right .. " **`{server.maxplayers}`:** The in-game server's maximum playercount.\n" .. emojis.right .. " **`{server.staff}`:** The in-game server's current staff count.\n" .. emojis.right .. " **`{server.queue}`:** The in-game server's current queue count.\n" .. emojis.right .. " **`{server.code}`:** The in-game server's join code.\n" .. emojis.right .. " **`{owner.name}`:** The in-game server owner's username.\n" .. emojis.right .. " **`{owner.display}`:** The in-game server owner's display name.\n" .. emojis.right .. " **`{owner.id}`:** The in-game server owner's ID.\n" .. emojis.right .. " **`{owner.profile}`:** The link to the in-game server owner's profile.\n" .. emojis.right .. " **`{owner.hyperlink}`:** The in-game server owner's username hyperlinked to their profile.\n" .. emojis.right .. " **`{team.civilian}`:** The current amount of players on the Civilian team.\n" .. emojis.right .. " **`{team.sheriff}`:** The current amount of players on the Sheriff team.\n" .. emojis.right .. " **`{team.fire}`:** The current amount of players on the Firefighter team.\n" .. emojis.right .. " **`{team.police}`:** The current amount of players on the Police team.\n" .. emojis.right .. " **`{team.dot}`:** The current amount of players on the DOT team.\n" .. emojis.right ..
+		-- 			" [`{timestamp}`](https://docs.duckybot.xyz/misc/timestamps): The timestamp of which the server status message was last updated."
+		-- 	},
+		-- 	welcome = {
+		-- 		display = emojis.right .. " **`{member.mention}`:** The mention of the member that joined.\n" .. emojis.right .. " **`{member.name}`:** The name of the member that joined.\n" .. emojis.right .. " **`{member.username}`:** The username of the member that joined.\n" .. emojis.right .. " **`{member.id}`:** The ID of the member that joined.\n" .. emojis.right .. " **`{guild.name}`:** The server's name.\n" .. emojis.right .. " **`{guild.id}`:** The server's ID.\n" .. emojis.right .. " **`{guild.membercount}`:** The server's membercount."
+		-- 	}
+		-- }
+
+		-- local function pages()
+		-- 	local pgs = {
+		-- 		["404"] = {
+		-- 			embed = {
+		-- 				name = emojis.moderate .. " In Development",
+		-- 				author = {
+		-- 					name = guild.name .. "'s Configuration",
+		-- 					icon_url = guild.iconURL
+		-- 				},
+		-- 				description = emojis.right .. " This configuration page is still in development. Try again later.",
+		-- 				color = colors.warning,
+		-- 				image = {
+		-- 					url = "https://duckybot.xyz/images/banners/footers/development.png"
+		-- 				}
+		-- 			},
+		-- 			components = discordia.Components():button({
+		-- 				id = "home",
+		-- 				emoji = resolvedEmojis.left,
+		-- 				style = "secondary"
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://docs.duckybot.xyz/",
+		-- 				label = "Documentation",
+		-- 				emoji = resolvedEmojis.book
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://duckybot.xyz/support",
+		-- 				label = "Support",
+		-- 				emoji = resolvedEmojis.support
+		-- 			})
+		-- 		},
+		-- 		home = {
+		-- 			name = emojis.settings .. " Configuration Menu",
+		-- 			embed = {
+		-- 				author = {
+		-- 					name = guild.name .. "'s Configuration",
+		-- 					icon_url = guild.iconURL
+		-- 				},
+		-- 				description = emojis.right .. " Welcome to the " .. emojis.settings .. " **Configuration Menu**, where you can enable, disable, and customize individual bot settings, commands, and modules with ease. To get started, select an option below.",
+		-- 				color = colors.yellow
+		-- 			},
+		-- 			components = discordia.Components():selectMenu({
+		-- 				id = "page",
+		-- 				placeholder = "Edit configuration...",
+		-- 				options = {
+		-- 					{
+		-- 						label = "Bot Settings",
+		-- 						description = "Edit basic settings",
+		-- 						emoji = resolvedEmojis.duckyoutline,
+		-- 						value = "bot"
+		-- 					},
+		-- 					{
+		-- 						label = "Permissions",
+		-- 						description = "Edit role-based permissions",
+		-- 						emoji = resolvedEmojis.permission,
+		-- 						value = "permissions"
+		-- 					},
+		-- 					{
+		-- 						label = "Modules",
+		-- 						description = "Toggle and configure modules",
+		-- 						emoji = resolvedEmojis.box,
+		-- 						value = "modules"
+		-- 					}
+		-- 				},
+		-- 				min_values = 0,
+		-- 				max_values = 1,
+		-- 				actionRow = 1
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://docs.duckybot.xyz/",
+		-- 				label = "Documentation",
+		-- 				emoji = resolvedEmojis.book,
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://duckybot.xyz/support",
+		-- 				label = "Support",
+		-- 				emoji = resolvedEmojis.support,
+		-- 				actionRow = 2
+		-- 			})
+		-- 		},
+		-- 		bot = {
+		-- 			name = emojis.duckyoutline .. " Bot Settings",
+		-- 			embed = {
+		-- 				author = {
+		-- 					name = guild.name .. "'s Configuration",
+		-- 					icon_url = guild.iconURL
+		-- 				},
+		-- 				description = emojis.right .. " Configure Ducky's prefix, and disable unwanted commands.\n### " .. emojis.settings .. " Configuration\n" .. emojis.right .. " **Prefix:** `" .. (config.prefix or "d!") .. "`\n" .. emojis.right .. " **Disabled Commands:**\n" .. emojis.space .. emojis.right .. " " .. ((config.disabledcommands and table.count(config.disabledcommands) > 0 and table.concatFn(config.disabledcommands, "\n" .. emojis.space .. emojis.right .. " ", function(v)
+		-- 					return "`/" .. v .. "`"
+		-- 				end)) or "None") .. "\n" .. emojis.right .. " **Configuration Log Channel:** " .. display(config.configlogchannel, "channel"),
+		-- 				color = colors.yellow
+		-- 			},
+		-- 			components = discordia.Components():selectMenu({
+		-- 				id = "modify",
+		-- 				placeholder = "Edit configuration...",
+		-- 				options = {
+		-- 					{
+		-- 						label = "Edit Prefix",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "prefix"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Disabled Commands",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "disabledcommands"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Config Log Channel",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "configlogchannel_channel"
+		-- 					}
+		-- 				},
+		-- 				min_values = 0,
+		-- 				max_values = 1,
+		-- 				actionRow = 1
+		-- 			}):button({
+		-- 				id = "home",
+		-- 				emoji = resolvedEmojis.left,
+		-- 				style = "secondary",
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://docs.duckybot.xyz/",
+		-- 				label = "Documentation",
+		-- 				emoji = resolvedEmojis.book,
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://duckybot.xyz/support",
+		-- 				label = "Support",
+		-- 				emoji = resolvedEmojis.support,
+		-- 				actionRow = 2
+		-- 			})
+		-- 		},
+		-- 		permissions = {
+		-- 			name = emojis.permission .. " Permissions",
+		-- 			embed = {
+		-- 				author = {
+		-- 					name = guild.name .. "'s Configuration",
+		-- 					icon_url = guild.iconURL
+		-- 				},
+		-- 				description = emojis.right .. " Configure role-based permissions for various features across Ducky.\n### " .. emojis.settings .. " Configuration\n" .. emojis.right .. " **Discord Moderator Roles:** " .. display(config.modroles, "role") .. "\n" .. emojis.right .. " **Discord Administrator Roles:** " .. display(config.adminroles, "role") .. "\n" .. emojis.right .. " **ERLC Staff Roles:** " .. display(config.erlcstaffroles, "role") .. "\n" .. emojis.right .. " **ERLC Administrator Roles:** " .. display(config.erlcadminroles, "role") .. "\n" .. emojis.right .. " **ERLC Manager Roles:** " .. display(config.erlcmanagerroles, "role") .. "\n" .. emojis.right .. " **Session Starter Roles:** " .. display(config.sessionstarterroles, "role"),
+		-- 				color = colors.yellow
+		-- 			},
+		-- 			components = discordia.Components():selectMenu({
+		-- 				id = "modify",
+		-- 				placeholder = "Edit configuration...",
+		-- 				options = {
+		-- 					{
+		-- 						label = "Edit Moderator Roles",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "modroles_role_5"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Administrator Roles",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "adminroles_role_5"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit ERLC Staff Roles",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "erlcstaffroles_role_5"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit ERLC Administrator Roles",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "erlcadminroles_role_5"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit ERLC Manager Roles",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "erlcmanagerroles_role_5"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Session Starter Roles",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "sessionstarterroles_role_5"
+		-- 					}
+		-- 				},
+		-- 				min_values = 0,
+		-- 				max_values = 1,
+		-- 				actionRow = 1
+		-- 			}):button({
+		-- 				id = "home",
+		-- 				emoji = resolvedEmojis.left,
+		-- 				style = "secondary",
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://docs.duckybot.xyz/",
+		-- 				label = "Documentation",
+		-- 				emoji = resolvedEmojis.book,
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://duckybot.xyz/support",
+		-- 				label = "Support",
+		-- 				emoji = resolvedEmojis.support,
+		-- 				actionRow = 2
+		-- 			})
+		-- 		},
+		-- 		modules = {
+		-- 			name = emojis.box .. " Modules",
+		-- 			embed = {
+		-- 				author = {
+		-- 					name = guild.name .. "'s Configuration",
+		-- 					icon_url = guild.iconURL
+		-- 				},
+		-- 				description = emojis.right .. " Toggle and configure individual modules with ease.",
+		-- 				color = colors.yellow
+		-- 			},
+		-- 			components = discordia.Components():selectMenu({
+		-- 				id = "page",
+		-- 				placeholder = "Select a module...",
+		-- 				options = {
+		-- 					{
+		-- 						label = "Discord Moderation",
+		-- 						emoji = resolvedEmojis.moderate,
+		-- 						value = "discordmoderation"
+		-- 					},
+		-- 					{
+		-- 						label = "Audit Logging",
+		-- 						emoji = resolvedEmojis.log,
+		-- 						value = "auditlogging"
+		-- 					},
+		-- 					{
+		-- 						label = "ERLC Integration",
+		-- 						emoji = resolvedEmojis.PRC,
+		-- 						value = "erlcintegration"
+		-- 					},
+		-- 					{
+		-- 						label = "ERLC Server Status",
+		-- 						emoji = resolvedEmojis.network,
+		-- 						value = "erlcserverstatus"
+		-- 					},
+		-- 					{
+		-- 						label = "Welcome",
+		-- 						emoji = resolvedEmojis.wave,
+		-- 						value = "welcome"
+		-- 					},
+		-- 					{
+		-- 						label = "Sessions",
+		-- 						emoji = resolvedEmojis.game,
+		-- 						value = "sessions"
+		-- 					},
+		-- 					{
+		-- 						label = "Staff Management",
+		-- 						emoji = resolvedEmojis.quickfix,
+		-- 						value = "staffmanagement"
+		-- 					},
+		-- 					{
+		-- 						label = "Roblox Punishments",
+		-- 						emoji = resolvedEmojis.roblox,
+		-- 						value = "robloxpunishments"
+		-- 					},
+		-- 					{
+		-- 						label = "Roblox Verification",
+		-- 						emoji = resolvedEmojis.roblox,
+		-- 						value = "robloxverification"
+		-- 					},
+		-- 					{
+		-- 						label = "Discord Pings",
+		-- 						emoji = resolvedEmojis.pings,
+		-- 						value = "discordpings"
+		-- 					},
+		-- 					{
+		-- 						label = "Feedback",
+		-- 						emoji = resolvedEmojis.star,
+		-- 						value = "feedback"
+		-- 					},
+		-- 					{
+		-- 						label = "Shift Management",
+		-- 						emoji = resolvedEmojis.clock,
+		-- 						value = "shiftmanagement"
+		-- 					},
+		-- 					{
+		-- 						label = "Activity Management",
+		-- 						emoji = resolvedEmojis.chart,
+		-- 						value = "activitymanagement"
+		-- 					},
+		-- 					{
+		-- 						label = "Server Economy",
+		-- 						emoji = resolvedEmojis.quack,
+		-- 						value = "economy"
+		-- 					},
+		-- 					{
+		-- 						label = "Tickets",
+		-- 						emoji = resolvedEmojis.ticket,
+		-- 						value = "tickets"
+		-- 					},
+		-- 					{
+		-- 						label = "Autoresponders",
+		-- 						emoji = resolvedEmojis.chat,
+		-- 						value = "autoresponders"
+		-- 					},
+		-- 					{
+		-- 						label = "Giveaways",
+		-- 						emoji = resolvedEmojis.gift,
+		-- 						value = "giveaways"
+		-- 					},
+		-- 					{
+		-- 						label = "Reaction Boards",
+		-- 						emoji = resolvedEmojis.board,
+		-- 						value = "reactionboards"
+		-- 					},
+		-- 					{
+		-- 						label = "Message Management",
+		-- 						emoji = resolvedEmojis.send,
+		-- 						value = "messagemanagement"
+		-- 					},
+		-- 					{
+		-- 						label = "Departments",
+		-- 						emoji = resolvedEmojis.guild,
+		-- 						value = "departments"
+		-- 					},
+		-- 					{
+		-- 						label = "Custom Logs",
+		-- 						emoji = resolvedEmojis.draft,
+		-- 						value = "customlogs"
+		-- 					}
+		-- 				},
+		-- 				min_values = 0,
+		-- 				max_values = 1,
+		-- 				actionRow = 1
+		-- 			}):button({
+		-- 				id = "home",
+		-- 				emoji = resolvedEmojis.left,
+		-- 				style = "secondary",
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://docs.duckybot.xyz/",
+		-- 				label = "Documentation",
+		-- 				emoji = resolvedEmojis.book,
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://duckybot.xyz/support",
+		-- 				label = "Support",
+		-- 				emoji = resolvedEmojis.support,
+		-- 				actionRow = 2
+		-- 			})
+		-- 		},
+		-- 		discordmoderation = {
+		-- 			name = emojis.moderate .. " Discord Moderation",
+		-- 			embed = {
+		-- 				author = {
+		-- 					name = guild.name .. "'s Configuration",
+		-- 					icon_url = guild.iconURL
+		-- 				},
+		-- 				description = emojis.right .. " Moderate your Discord server with ease.\n### " .. emojis.settings .. " Configuration\n" .. emojis.right .. " **Module Enabled:** " .. display(moduleEnabled("discordmoderation", config), "boolean") .. "\n" .. emojis.right .. " **Modlogs Channel:** " .. display(config.modlogchannel, "channel") .. "\n" .. emojis.right .. " **Appeal Links:**\n" .. emojis.space .. emojis.right .. " " .. (config.appealLinks and table.count(config.appealLinks) > 0 and (table.concatFn(config.appealLinks, "\n" .. emojis.space .. emojis.right .. " ", function(v)
+		-- 					return "**" .. string.capitalize(v.type) .. ":** " .. v.link
+		-- 				end)) or "None"),
+		-- 				color = colors.yellow
+		-- 			},
+		-- 			components = discordia.Components():selectMenu({
+		-- 				id = "modify",
+		-- 				placeholder = "Edit configuration...",
+		-- 				options = {
+		-- 					{
+		-- 						label = "Toggle Module",
+		-- 						emoji = resolvedEmojis.box,
+		-- 						value = "discordmoderation_module"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Modlogs Channel",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "modlogchannel_channel"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Appeal Links",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "appealLinks"
+		-- 					}
+		-- 				},
+		-- 				min_values = 0,
+		-- 				max_values = 1,
+		-- 				actionRow = 1
+		-- 			}):button({
+		-- 				id = "modules",
+		-- 				emoji = resolvedEmojis.left,
+		-- 				style = "secondary",
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://docs.duckybot.xyz/",
+		-- 				label = "Documentation",
+		-- 				emoji = resolvedEmojis.book,
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://duckybot.xyz/support",
+		-- 				label = "Support",
+		-- 				emoji = resolvedEmojis.support,
+		-- 				actionRow = 2
+		-- 			})
+		-- 		},
+		-- 		auditlogging = {
+		-- 			name = emojis.log .. " Audit Logging",
+		-- 			embed = {
+		-- 				author = {
+		-- 					name = guild.name .. "'s Configuration",
+		-- 					icon_url = guild.iconURL
+		-- 				},
+		-- 				description = emojis.right .. " Monitor changes occurring in your server.\n### " .. emojis.settings .. " Configuration\n" .. emojis.right .. " **Module Enabled:** " .. display(moduleEnabled("auditlogging", config), "boolean") .. "\n" .. emojis.right .. " **Primary Audit Log Channel:** " .. display(config.primaryauditlogchannel, "channel") .. "\n" .. emojis.right .. " **Audit Log Types:**\n" .. ((config.audittypes and table.count(config.audittypes) > 0 and table.concatFn(config.audittypes, "\n" .. emojis.space .. emojis.right .. " ", function(v)
+		-- 					for _, type in pairs(auditTypes) do
+		-- 						if type.value:lower() == v:lower() then
+		-- 							return type.emoji.raw .. " " .. type.label
+		-- 						end
+		-- 					end
+		-- 				end)) or emojis.space .. emojis.right .. " None"),
+		-- 				color = colors.yellow
+		-- 			},
+		-- 			components = discordia.Components():selectMenu({
+		-- 				id = "modify",
+		-- 				placeholder = "Edit configuration...",
+		-- 				options = {
+		-- 					{
+		-- 						label = "Toggle Module",
+		-- 						emoji = resolvedEmojis.box,
+		-- 						value = "auditlogging_module"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Audit Log Channel",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "primaryauditlogchannel_channel"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Audit Log Types",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "audittypes"
+		-- 					}
+		-- 				},
+		-- 				min_values = 0,
+		-- 				max_values = 1,
+		-- 				actionRow = 1
+		-- 			}):button({
+		-- 				id = "modules",
+		-- 				emoji = resolvedEmojis.left,
+		-- 				style = "secondary",
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://docs.duckybot.xyz/",
+		-- 				label = "Documentation",
+		-- 				emoji = resolvedEmojis.book,
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://duckybot.xyz/support",
+		-- 				label = "Support",
+		-- 				emoji = resolvedEmojis.support,
+		-- 				actionRow = 2
+		-- 			})
+		-- 		},
+		-- 		erlcintegration = {
+		-- 			name = emojis.PRC .. " ERLC Integration",
+		-- 			embed = {
+		-- 				author = {
+		-- 					name = guild.name .. "'s Configuration",
+		-- 					icon_url = guild.iconURL
+		-- 				},
+		-- 				description = emojis.right .. " Manage and view your ERLC server without having to go in-game.\n### " .. emojis.settings .. " Configuration\n" .. emojis.right .. " **Module Enabled:** " .. display(moduleEnabled("erlcintegration", config), "boolean") .. "\n" .. emojis.right .. " **ERLC Server:** " .. ((config.erlccache and config.erlccache.server and config.erlccache.server.Name) or "N/A") .. "\n" .. emojis.right .. " **In-Game Role:** " .. display(config.ingamerole, "role") .. "\n" .. emojis.right .. " **ERLC Command Logs Channel:** " .. display(config.erlccmdschannel, "channel") .. "\n" .. emojis.right .. " **ERLC Kick/Ban Logs Channel:** " .. display(config.erlckickbanchannel, "channel") .. "\n" .. emojis.right .. " **Ban Syncing Mode:** " .. ((config.erlcbansync and ({
+		-- 					erlctodc = "ERLC" .. emojis.right .. "Discord",
+		-- 					dctoerlc = "Discord" .. emojis.right .. "ERLC",
+		-- 					both = "ERLC " .. emojis.transfer .. " Discord"
+		-- 				})[config.erlcbansync]) or emojis.fail) .. "\n" .. emojis.right .. " **Advanced Remote Permissions:** " .. display(config.advancederlccmdperms, "boolean") .. "\n" .. emojis.right .. " **Auto Log Kicks/BOLOs:** " .. display(config.erlcautologkickban, "boolean"),
+		-- 				color = colors.yellow
+		-- 			},
+		-- 			components = discordia.Components():selectMenu({
+		-- 				id = "modify",
+		-- 				placeholder = "Edit configuration...",
+		-- 				options = {
+		-- 					{
+		-- 						label = "Toggle Module",
+		-- 						emoji = resolvedEmojis.box,
+		-- 						value = "erlcintegration_module"
+		-- 					},
+		-- 					{
+		-- 						label = "Link ERLC Server",
+		-- 						emoji = resolvedEmojis.key,
+		-- 						value = "apikey"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit In-Game Role",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "ingamerole_role"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit ERLC Command Logs Channel",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "erlccmdschannel_channel"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit ERLC Kick/Ban Logs Channel",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "erlckickbanchannel_channel"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Ban Syncing Mode",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "erlcbansync"
+		-- 					},
+		-- 					{
+		-- 						label = "Toggle Advanced Remote Permissions",
+		-- 						emoji = resolvedEmojis.on,
+		-- 						value = "advancederlccmdperms_toggle"
+		-- 					},
+		-- 					{
+		-- 						label = "Toggle Auto Log Kicks/BOLOs",
+		-- 						emoji = resolvedEmojis.on,
+		-- 						value = "erlcautologkickban_toggle"
+		-- 					}
+		-- 				},
+		-- 				min_values = 0,
+		-- 				max_values = 1,
+		-- 				actionRow = 1
+		-- 			}):button({
+		-- 				id = "modules",
+		-- 				emoji = resolvedEmojis.left,
+		-- 				style = "secondary",
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://docs.duckybot.xyz/",
+		-- 				label = "Documentation",
+		-- 				emoji = resolvedEmojis.book,
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://duckybot.xyz/support",
+		-- 				label = "Support",
+		-- 				emoji = resolvedEmojis.support,
+		-- 				actionRow = 2
+		-- 			})
+		-- 		},
+		-- 		erlcserverstatus = {
+		-- 			name = emojis.network .. " ERLC Server Status",
+		-- 			embed = {
+		-- 				author = {
+		-- 					name = guild.name .. "'s Configuration",
+		-- 					icon_url = guild.iconURL
+		-- 				},
+		-- 				description = emojis.right .. " Display live statistics from your ERLC server within your Discord server.\n### " .. emojis.settings .. " Configuration\n" .. emojis.right .. " **Module Enabled:** " .. display(moduleEnabled("erlcserverstatus", config), "boolean") .. "\n" .. emojis.right .. " **Server Status Message:** " .. "\n" .. emojis.space .. emojis.right .. " **Channel:** " .. display(config.erlcserverstatusmessage and config.erlcserverstatusmessage.channel, "channel") .. "\n" .. emojis.space .. emojis.right .. " **Link:** " .. ((config.erlcserverstatusmessage and config.erlcserverstatusmessage.channel and config.erlcserverstatusmessage.message and ("https://discord.com/channels/" .. guild.id .. "/" .. config.erlcserverstatusmessage.channel .. "/" .. config.erlcserverstatusmessage.message)) or "N/A") .. "\n" .. emojis.space .. emojis.right .. " **Content:** " .. ((config.erlcserverstatusmessage and config.erlcserverstatusmessage.tosend and "Custom") or "N/A") .. "\n" .. emojis.right .. " **Server Status Channels:** \n" .. emojis.space .. emojis.right .. " " .. ((config.erlcserverstatuschannels and (table.count(config.erlcserverstatuschannels) > 0) and table.concatFn(config.erlcserverstatuschannels, "\n" .. emojis.space .. emojis.right .. " ", function(sh)
+		-- 					local channel = guild:getChannel(sh.channel)
+
+		-- 					if channel then
+		-- 						return channel.mentionString
+		-- 					else
+		-- 						return nil
+		-- 					end
+		-- 				end)) or "None"),
+		-- 				color = colors.yellow
+		-- 			},
+		-- 			components = discordia.Components():selectMenu({
+		-- 				id = "modify",
+		-- 				placeholder = "Edit configuration...",
+		-- 				options = {
+		-- 					{
+		-- 						label = "Toggle Module",
+		-- 						emoji = resolvedEmojis.box,
+		-- 						value = "erlcserverstatus_module"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Server Status Message",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "erlcserverstatusmessage"
+		-- 					},
+		-- 					{
+		-- 						label = "Create Server Status Channel",
+		-- 						emoji = resolvedEmojis.plus,
+		-- 						value = "erlcserverstatuschannels_create"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Server Status Channel",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "erlcserverstatuschannels_edit"
+		-- 					},
+		-- 					{
+		-- 						label = "Remove Server Status Channel",
+		-- 						emoji = resolvedEmojis.minus,
+		-- 						value = "erlcserverstatuschannels_remove"
+		-- 					},
+		-- 					{
+		-- 						label = "Variables",
+		-- 						emoji = resolvedEmojis.json,
+		-- 						value = "erlcserverstatus_variables"
+		-- 					}
+		-- 				},
+		-- 				min_values = 0,
+		-- 				max_values = 1,
+		-- 				actionRow = 1
+		-- 			}):button({
+		-- 				id = "modules",
+		-- 				emoji = resolvedEmojis.left,
+		-- 				style = "secondary",
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://docs.duckybot.xyz/",
+		-- 				label = "Documentation",
+		-- 				emoji = resolvedEmojis.book,
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://duckybot.xyz/support",
+		-- 				label = "Support",
+		-- 				emoji = resolvedEmojis.support,
+		-- 				actionRow = 2
+		-- 			})
+		-- 		},
+		-- 		welcome = {
+		-- 			name = emojis.wave .. " Welcome",
+		-- 			embed = {
+		-- 				author = {
+		-- 					name = guild.name .. "'s Configuration",
+		-- 					icon_url = guild.iconURL
+		-- 				},
+		-- 				description = emojis.right .. " Greet your users with an automated message, and automatically give them necessary roles.\n### " .. emojis.settings .. " Configuration\n" .. emojis.right .. " **Module Enabled:** " .. display(moduleEnabled("welcome", config), "boolean") .. "\n" .. emojis.right .. " **Autoroles:**\n" .. emojis.space .. emojis.right .. " " .. ((config.joinroles and (table.count(config.joinroles) > 0) and table.concatFn(config.joinroles, "\n" .. emojis.space .. emojis.right .. " ", function(jr)
+		-- 					return "<@&" .. tostring(jr) .. ">"
+		-- 				end)) or "None") .. "\n" .. emojis.right .. " **Welcome Channel:** " .. display(config.joinchannel, "channel") .. "\n" .. emojis.right .. " **Welcome Message:** " .. ((config.joinmessage and "Custom") or "N/A"),
+		-- 				color = colors.yellow
+		-- 			},
+		-- 			components = discordia.Components():selectMenu({
+		-- 				id = "modify",
+		-- 				placeholder = "Edit configuration...",
+		-- 				options = {
+		-- 					{
+		-- 						label = "Toggle Module",
+		-- 						emoji = resolvedEmojis.box,
+		-- 						value = "welcome_module"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Autoroles",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "joinroles_role_5"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Welcome Channel",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "joinchannel_channel"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Welcome Message",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "joinmessage_message"
+		-- 					},
+		-- 					{
+		-- 						label = "Test Welcome Message",
+		-- 						emoji = resolvedEmojis.support,
+		-- 						value = "joinmessage_test"
+		-- 					}
+		-- 				},
+		-- 				min_values = 0,
+		-- 				max_values = 1,
+		-- 				actionRow = 1
+		-- 			}):button({
+		-- 				id = "modules",
+		-- 				emoji = resolvedEmojis.left,
+		-- 				style = "secondary",
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://docs.duckybot.xyz/",
+		-- 				label = "Documentation",
+		-- 				emoji = resolvedEmojis.book,
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://duckybot.xyz/support",
+		-- 				label = "Support",
+		-- 				emoji = resolvedEmojis.support,
+		-- 				actionRow = 2
+		-- 			})
+		-- 		},
+		-- 		sessions = {
+		-- 			name = emojis.game .. " Sessions",
+		-- 			embed = {
+		-- 				author = {
+		-- 					name = guild.name .. "'s Configuration",
+		-- 					icon_url = guild.iconURL
+		-- 				},
+		-- 				description = emojis.right .. " Manage your sessions with ease.\n### " .. emojis.settings .. " Configuration\n" .. emojis.right .. " **Module Enabled:** " .. display(moduleEnabled("sessions", config), "boolean") .. "\n" .. emojis.right .. " **Sessions Channel:** " .. display(config.sessionschannel, "channel") .. "\n" .. emojis.right .. " **Session Mentionables:** " .. display(config.sessionmentionables or {}, "mentionable") .. "\n" .. emojis.right .. " **Mention Here:** " .. display(config.sessionspinghere, "boolean") .. "\n" .. emojis.right .. " **Mention Everyone:** " .. display(config.sessionspingeveryone, "boolean") .. "\n" .. emojis.right .. " **Server Information:** " .. display(config.serverInfo, function(info, space, fail)
+		-- 					return space .. " **Server Name:** " .. (info.Name or fail) .. space .. " **Server Max Players:** " .. (info.MaxPlayers or fail) .. space .. " **Server Join Key:** " .. (info.JoinKey or fail)
+		-- 				end, nil, "Fetched with " .. emojis.key .. " **ERLC API Key**"),
+		-- 				color = colors.yellow
+		-- 			},
+		-- 			components = discordia.Components():selectMenu({
+		-- 				id = "modify",
+		-- 				placeholder = "Edit configuration...",
+		-- 				options = {
+		-- 					{
+		-- 						label = "Toggle Module",
+		-- 						emoji = resolvedEmojis.box,
+		-- 						value = "sessions_module"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Sessions Channel",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "sessionschannel_channel"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Session Mentionables",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "sessionmentionables_mentionable_5"
+		-- 					},
+		-- 					{
+		-- 						label = "Toggle Mention Here",
+		-- 						emoji = resolvedEmojis.on,
+		-- 						value = "sessionspinghere_toggle"
+		-- 					},
+		-- 					{
+		-- 						label = "Toggle Mention Everyone",
+		-- 						emoji = resolvedEmojis.on,
+		-- 						value = "sessionspingeveryone_toggle"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Server Information",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "serverInfo"
+		-- 					}
+		-- 				},
+		-- 				min_values = 0,
+		-- 				max_values = 1,
+		-- 				actionRow = 1
+		-- 			}):button({
+		-- 				id = "modules",
+		-- 				emoji = resolvedEmojis.left,
+		-- 				style = "secondary",
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://docs.duckybot.xyz/",
+		-- 				label = "Documentation",
+		-- 				emoji = resolvedEmojis.book,
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://duckybot.xyz/support",
+		-- 				label = "Support",
+		-- 				emoji = resolvedEmojis.support,
+		-- 				actionRow = 2
+		-- 			})
+		-- 		},
+		-- 		staffmanagement = {
+		-- 			name = emojis.quickfix .. " Staff Management",
+		-- 			embed = {
+		-- 				author = {
+		-- 					name = guild.name .. "'s Configuration",
+		-- 					icon_url = guild.iconURL
+		-- 				},
+		-- 				description = emojis.right .. " Manage your staff with ease.\n### " .. emojis.settings .. " Configuration\n" .. emojis.right .. " **Module Enabled:** " .. display(moduleEnabled("staffmanagement", config), "boolean"),
+		-- 				color = colors.yellow
+		-- 			},
+		-- 			components = discordia.Components():selectMenu({
+		-- 				id = "modify",
+		-- 				placeholder = "Edit configuration...",
+		-- 				options = {
+		-- 					{
+		-- 						label = "Toggle Module",
+		-- 						emoji = resolvedEmojis.box,
+		-- 						value = "staffmanagement_module"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Infractions Channel",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "infractionschannel_channel"
+		-- 					},
+		-- 					{
+		-- 						label = "Create Infraction Type",
+		-- 						emoji = resolvedEmojis.plus,
+		-- 						value = "infractiontypes_create"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Infraction Type",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "infractiontypes_edit"
+		-- 					},
+		-- 					{
+		-- 						label = "Remove Infraction Type",
+		-- 						emoji = resolvedEmojis.minus,
+		-- 						value = "infractiontypes_remove"
+		-- 					},
+		-- 					{
+		-- 						label = "Edit Promotions Channel",
+		-- 						emoji = resolvedEmojis.edit,
+		-- 						value = "promotionschannel_channel"
+		-- 					}
+		-- 				},
+		-- 				min_values = 0,
+		-- 				max_values = 1,
+		-- 				actionRow = 1
+		-- 			}):button({
+		-- 				id = "modules",
+		-- 				emoji = resolvedEmojis.left,
+		-- 				style = "secondary",
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://docs.duckybot.xyz/",
+		-- 				label = "Documentation",
+		-- 				emoji = resolvedEmojis.book,
+		-- 				actionRow = 2
+		-- 			}):button({
+		-- 				style = "link",
+		-- 				url = "https://duckybot.xyz/support",
+		-- 				label = "Support",
+		-- 				emoji = resolvedEmojis.support,
+		-- 				actionRow = 2
+		-- 			})
+		-- 		}
+		-- 	}
+
+		-- 	for _, pg in pairs(pgs) do
+		-- 		pg.embed.description = ((pg.name and ("## " .. pg.name .. "\n")) or "") .. pg.embed.description
+		-- 	end
+
+		-- 	return pgs
+		-- end
+
+		-- local function updateMenu(ia, pg)
+		-- 	page = pg or page
+		-- 	ia = ia or menu
+
+		-- 	local pages = pages()
+
+		-- 	return ia:update(pages[page] or pages["404"])
+		-- end
+
+		-- local query = (not slash) and args and table.concat(args, " ")
+
+		-- if query and query ~= "" then
+		-- 	for name, pg in pairs(pages()) do
+		-- 		if pg.name and pg.name:lower():find(query:lower()) then
+		-- 			page = name
+		-- 			break
+		-- 		end
+		-- 	end
+		-- end
+
+		-- updateMenu()
+
+		-- onComp(menu, nil, nil, interaction.user.id, false, function(ia)
+		-- 	local id = ia.data.custom_id
+		-- 	local selections = ia.data.values
+		-- 	local first = selections and selections[1]
+
+		-- 	if id == "modify" then
+		-- 		local split = string.split(first, "_")
+		-- 		local key = split[1]
+		-- 		local action = split[2]
+		-- 		local other = split[3]
+
+		-- 		if key == "prefix" then
+		-- 			prompt(ia, "Edit Prefix", {
+		-- 				{
+		-- 					question = "New Prefix",
+		-- 					placeholder = "d!",
+		-- 					style = "short",
+		-- 					required = false
+		-- 				}
+		-- 			}, function(mia, responses)
+		-- 				if mia then
+		-- 					if responses and responses["New Prefix"] then
+		-- 						local new = responses["New Prefix"]
+
+		-- 						if new:len() <= 5 and new:len() >= 1 then
+		-- 							modify("prefix", new)
+		-- 							updateMenu(mia)
+		-- 						else
+		-- 							mia:fail("The prefix's length must be between 1 and 5 characters.", nil, true)
+		-- 							updateMenu()
+		-- 						end
+		-- 					else
+		-- 						modify("prefix", "d!")
+		-- 						updateMenu(ia)
+		-- 					end
+		-- 				end
+		-- 			end, false)
+		-- 		elseif key == "disabledcommands" then
+		-- 			prompt(ia, "Edit Disabled Commands", {
+		-- 				{
+		-- 					question = "Disabled Commands",
+		-- 					placeholder = "Enter commands to disable, separated by a comma.",
+		-- 					style = "paragraph",
+		-- 					required = false
+		-- 				}
+		-- 			}, function(mia, responses)
+		-- 				if mia then
+		-- 					if responses and responses["Disabled Commands"] then
+		-- 						local queries = string.split(responses["Disabled Commands"]:gsub(" ", ""), ",")
+		-- 						local disabledcommands = {}
+
+		-- 						for _, query in pairs(queries) do
+		-- 							query = query:lower()
+		-- 							local command
+		-- 							for _, cmd in pairs(commands) do
+		-- 								if cmd.name == query or table.find(cmd.aliases or {}, query) then
+		-- 									command = cmd
+		-- 									break
+		-- 								end
+		-- 							end
+
+		-- 							if command then
+		-- 								if table.find(command.requiredPermissions, "BOT_DEVELOPER") then
+		-- 									updateMenu()
+		-- 									return mia:fail("The command `" .. command.name .. "` cannot be disabled as it is locked to the Ducky Development team.", nil, true)
+		-- 								elseif table.find(command.requiredPermissions, "SUPPORT") then
+		-- 									updateMenu()
+		-- 									return mia:fail("The command `" .. command.name .. "` cannot be disabled as it is locked to the Ducky Support team.", nil, true)
+		-- 								else
+		-- 									table.insert(disabledcommands, command)
+		-- 								end
+		-- 							else
+		-- 								updateMenu()
+		-- 								return mia:fail("The command `" .. query .. "` was not found.", nil, true)
+		-- 							end
+		-- 						end
+
+		-- 						modify("disabledcommands", disabledcommands)
+		-- 						updateMenu(mia)
+		-- 					else
+		-- 						modify("prefix", "d!")
+		-- 						updateMenu(ia)
+		-- 					end
+		-- 				end
+		-- 			end, false)
+		-- 		elseif key == "appealLinks" then
+		-- 			optionsSelect(ia, "Select appeal type...", function(opt, cia)
+		-- 				local question = opt .. " Appeal Link"
+
+		-- 				prompt(cia, "Appeal Link", {
+		-- 					{
+		-- 						question = question,
+		-- 						placeholder = "https://appeal.gg/",
+		-- 						style = "short",
+		-- 						required = false
+		-- 					}
+		-- 				}, function(mia, response)
+		-- 					if mia then
+		-- 						if response and response[question] and response[question]:len() > 10 and (select(2, response[question]:gsub("https?://[%w-_%.%?%.:/]+", "")) > 0) then
+		-- 							config.appealLinks = config.appealLinks or {}
+		-- 							config.appealLinks[opt] = response[question]
+		-- 							modify("appealLinks", config.appealLinks)
+
+		-- 							mia:updateDeferred(true)
+		-- 							return updateMenu()
+		-- 						else
+		-- 							local success = remove("appealLinks", function(type)
+		-- 								return type == opt
+		-- 							end)
+
+		-- 							if success then
+		-- 								mia:updateDeferred(true)
+		-- 							else
+		-- 								mia:fail("The URL you provided is invalid.", nil, true)
+		-- 							end
+
+		-- 							return updateMenu()
+		-- 						end
+		-- 					end
+		-- 				end, true)
+		-- 			end, true, {
+		-- 				{
+		-- 					label = "Warning",
+		-- 					value = "warning",
+		-- 					description = "The appeal link for warnings via Ducky.",
+		-- 					emoji = resolvedEmojis.warning
+		-- 				},
+		-- 				{
+		-- 					label = "Mute",
+		-- 					value = "mute",
+		-- 					description = "The appeal link for mutes via Ducky.",
+		-- 					emoji = resolvedEmojis.timeout
+		-- 				},
+		-- 				{
+		-- 					label = "Ban",
+		-- 					value = "ban",
+		-- 					description = "The appeal link for bans via Ducky.",
+		-- 					emoji = resolvedEmojis.ban
+		-- 				}
+		-- 			}, 1, nil, true)
+		-- 		elseif key == "audittypes" then
+		-- 			optionsSelect(ia, "Select audit types...", function(types)
+		-- 				modify("audittypes", types)
+		-- 				updateMenu()
+		-- 			end, true, auditTypes, nil, config.audittypes)
+		-- 		elseif key == "apikey" then
+		-- 			prompt(ia, "Link ERLC Server", {
+		-- 				{
+		-- 					question = "ERLC API Key",
+		-- 					placeholder = "Enter your ERLC API key here...",
+		-- 					reqiured = false,
+		-- 					style = "short"
+		-- 				}
+		-- 			}, function(mia, responses)
+		-- 				if mia then
+		-- 					if responses and responses["ERLC API Key"] then
+		-- 						local key = responses["ERLC API Key"]
+		-- 						local success, server, result = erlua.Server(key)
+
+		-- 						if success and server then
+		-- 							modify("apikey", key)
+		-- 							modify("erlccache", {
+		-- 								server = server
+		-- 							})
+		-- 							mia:updateDeferred(true)
+		-- 							return updateMenu()
+		-- 						else
+		-- 							mia:fail("That ERLC API key is invalid.", nil, true)
+		-- 							return updateMenu()
+		-- 						end
+		-- 					else
+		-- 						modify("apikey")
+		-- 						modify("erlccache")
+		-- 						mia:updateDeferred(true)
+		-- 						return updateMenu()
+		-- 					end
+		-- 				end
+		-- 			end, false)
+		-- 		elseif key == "erlcbansync" then
+		-- 			if not config.apikey then
+		-- 				interaction:fail("You have not linked an ERLC server.", nil, true)
+		-- 				return updateMenu()
+		-- 			elseif not config.erlckickbanchannel then
+		-- 				interaction:fail("You have not set an **ERLC Kick/Ban Logs Channel**.", nil, true)
+		-- 				return updateMenu()
+		-- 			elseif not config.erlccmdschannel then
+		-- 				interaction:fail("You have not set an **ERLC Command Logs Channel**.", nil, true)
+		-- 				return updateMenu()
+		-- 			end
+
+		-- 			optionsSelect(ia, "Select a Ban Syncing Mode...", function(opt)
+		-- 				modify("erlcbansync", (opt ~= "disable" and opt) or nil)
+		-- 				return updateMenu()
+		-- 			end, true, {
+		-- 				{
+		-- 					label = "Discord to ERLC",
+		-- 					value = "dctoerlc",
+		-- 					description = "Users banned in Discord will be banned in ERLC",
+		-- 					emoji = resolvedEmojis.PRC
+		-- 				},
+		-- 				{
+		-- 					label = "ERLC to Discord",
+		-- 					value = "erlctodc",
+		-- 					description = "Users banned in ERLC will be banned in Discord",
+		-- 					emoji = resolvedEmojis.discord
+		-- 				},
+		-- 				{
+		-- 					label = "Both",
+		-- 					value = "both",
+		-- 					description = "Users will be banned in both directions",
+		-- 					emoji = resolvedEmojis.transfer
+		-- 				},
+		-- 				{
+		-- 					label = "Disable",
+		-- 					value = "disable",
+		-- 					description = "Disable ban syncing",
+		-- 					emoji = resolvedEmojis.ban
+		-- 				}
+		-- 			}, 1, nil, true)
+		-- 		elseif key == "erlcserverstatusmessage" then
+		-- 			messageEditor(ia, function(builtMsg)
+		-- 				if not builtMsg then
+		-- 					return
+		-- 				end
+
+		-- 				local statusChannel = guild:getChannel(builtMsg.channel)
+
+		-- 				if statusChannel then
+		-- 					local statusMessage, e = statusChannel:send(parseTable({
+		-- 						content = builtMsg.content,
+		-- 						embeds = builtMsg.embeds
+		-- 					}, statusmsgKeys))
+
+		-- 					if statusMessage then
+		-- 						modifyKey("erlcserverstatusmessage", {
+		-- 							channel = builtMsg.channel,
+		-- 							message = statusMessage.id,
+		-- 							tosend = {
+		-- 								content = builtMsg.content,
+		-- 								embeds = builtMsg.embeds
+		-- 							}
+		-- 						})
+
+		-- 						updatePage(5)
+		-- 					else
+		-- 						ia:fail("Failed to send message: ```" .. e .. "```", nil, true)
+		-- 					end
+		-- 				else
+		-- 					ia:fail("Failed to find channel, please make sure Ducky has permissions to view the channel.", nil, true)
+		-- 				end
+		-- 			end, vars, (config.erlcserverstatusmessage and config.erlcserverstatusmessage.tosend) or nil, true)
+		-- 		elseif key == "erlcserverstatuschannels" then
+		-- 			if action == "create" then
+		-- 				if checkLimit(ia, "status channels", plus, config.erlcserverstatuschannels, "erlcStatusChannels") then
+		-- 					return
+		-- 				end
+
+		-- 				prompt(ia, "ERLC Server Status Channel", {
+		-- 					{
+		-- 						question = "Channel Name",
+		-- 						placeholder = "Go back to view variables.",
+		-- 						style = "short",
+		-- 						required = true
+		-- 					}
+		-- 				}, function(mia, response)
+		-- 					if mia and response and response["Channel Name"] and response["Channel Name"] ~= "" then
+		-- 						local name = response["Channel Name"]
+
+		-- 						if name:len() < 1 or name:len() > 100 then
+		-- 							mia:fail("You must provide a name between 1 and 100 characters.", nil, true)
+		-- 							return updateMenu()
+		-- 						end
+
+		-- 						local new, replaced = parseTable({
+		-- 							name
+		-- 						}, variables.erlcserverstatusmessage.keys)
+
+		-- 						if replaced < 1 then
+		-- 							mia:fail("You need to use at least 1 variable.", nil, true)
+		-- 							return updateMenu()
+		-- 						end
+
+		-- 						if new and new[1] then
+		-- 							new[1] = new[1]:gsub(emojis.loading, "⏳")
+
+		-- 							local voiceChannel, err = guild:createVoiceChannel(new[1])
+
+		-- 							if type(voiceChannel) == "table" then
+		-- 								coroutine.wrap(function()
+		-- 									local overwrite = voiceChannel:getPermissionOverwriteFor(guild.defaultRole)
+		-- 									if overwrite then
+		-- 										overwrite:setPermissions({
+		-- 											discordia.enums.readMessages
+		-- 										}, {
+		-- 											discordia.enums.permission.sendMessages,
+		-- 											discordia.enums.permission.connect,
+		-- 											discordia.enums.permission.speak
+		-- 										})
+		-- 									end
+		-- 								end)()
+		-- 								config.erlcserverstatuschannels = config.erlcserverstatuschannels or {}
+		-- 								table.insert(config.erlcserverstatuschannels, {
+		-- 									channel = voiceChannel.id,
+		-- 									content = name
+		-- 								})
+
+		-- 								modify("erlcserverstatuschannels", config.erlcserverstatuschannels)
+		-- 								mia:updateDeferred(true)
+		-- 								return updateMenu()
+		-- 							else
+		-- 								mia:fail("Failed to create voice channel: ```" .. err .. "```", nil, true)
+		-- 								return updateMenu()
+		-- 							end
+		-- 						else
+		-- 							mia:fail("Something went wrong, please try again or contact [Ducky Support](https://discord.gg/j4w5ZcbRyh).", nil, true)
+		-- 							return updateMenu()
+		-- 						end
+
+		-- 						mia:updateDeferred(true)
+		-- 						return updateMenu()
+		-- 					end
+		-- 				end, true)
+		-- 			elseif action == "edit" then
+		-- 				if not config.erlcserverstatuschannels or table.count(config.erlcserverstatuschannels) < 1 then
+		-- 					ia:fail("You have not created any ERLC server status channels.", nil, true)
+		-- 					return updateMenu()
+		-- 				end
+
+		-- 				local options = {}
+
+		-- 				local modified = false
+
+		-- 				for i, v in pairs(config.erlcserverstatuschannels) do
+		-- 					local channel = guild:getChannel(v.channel)
+
+		-- 					if channel then
+		-- 						table.insert(options, {
+		-- 							label = "#" .. tostring(i),
+		-- 							value = tostring(i) .. ":" .. v.channel,
+		-- 							emoji = resolvedEmojis.channel
+		-- 						})
+		-- 					else
+		-- 						table.remove(config.erlcserverstatuschannels, i)
+		-- 						modified = true
+		-- 					end
+		-- 				end
+
+		-- 				if modified then
+		-- 					modify("erlcserverstatuschannels", config.erlcserverstatuschannels)
+		-- 				end
+
+		-- 				if table.count(options) < 1 then
+		-- 					return ia:fail("You have not created any ERLC server status channels.", nil, true)
+		-- 				end
+
+		-- 				optionsSelect(ia, "Select status channel...", function(selection, cia)
+		-- 					local splitSelection = string.split(selection, ":")
+		-- 					local i = splitSelection[1]
+		-- 					local channelID = splitSelection[2]
+
+		-- 					local voiceChannel = guild:getChannel(channelID)
+
+		-- 					if voiceChannel then
+		-- 						prompt(cia, "ERLC Server Status Channel", {
+		-- 							{
+		-- 								question = "Channel Name",
+		-- 								placeholder = "Go back to view variables.",
+		-- 								default = config.erlcserverstatuschannels[tonumber(i)].content,
+		-- 								style = "short",
+		-- 								required = true
+		-- 							}
+		-- 						}, function(mia, response)
+		-- 							if mia and response and response["Channel Name"] and response["Channel Name"] ~= "" then
+		-- 								local name = response["Channel Name"]
+
+		-- 								if name:len() < 1 or name:len() > 100 then
+		-- 									mia:fail("You must provide a name between 1 and 100 characters.", nil, true)
+		-- 									return updateMenu()
+		-- 								end
+
+		-- 								local new, replaced = parseTable({
+		-- 									name
+		-- 								}, variables.erlcserverstatusmessage.keys)
+
+		-- 								if replaced < 1 then
+		-- 									mia:fail("You need to use at least 1 variable.", nil, true)
+		-- 									return updateMenu()
+		-- 								end
+
+		-- 								if new and new[1] then
+		-- 									new[1] = new[1]:gsub(emojis.loading, "⏳")
+
+		-- 									voiceChannel:setName(new[1])
+
+		-- 									config.erlcserverstatuschannels = config.erlcserverstatuschannels or {}
+		-- 									config.erlcserverstatuschannels[tonumber(i)] = {
+		-- 										channel = voiceChannel.id,
+		-- 										content = name
+		-- 									}
+
+		-- 									modify("erlcserverstatuschannels", config.erlcserverstatuschannels)
+		-- 									mia:updateDeferred(true)
+		-- 									return updateMenu()
+		-- 								else
+		-- 									mia:fail("Something went wrong, please try again or contact [Ducky Support](https://discord.gg/j4w5ZcbRyh).", nil, true)
+		-- 									return updateMenu()
+		-- 								end
+
+		-- 								mia:updateDeferred(true)
+		-- 								return updateMenu()
+		-- 							end
+		-- 						end, true)
+		-- 					else
+		-- 						return cia:fail("I could not find that channel.")
+		-- 					end
+		-- 				end, true, options, 1, nil, true)
+		-- 			elseif action == "remove" then
+		-- 				if not config.erlcserverstatuschannels or table.count(config.erlcserverstatuschannels) < 1 then
+		-- 					ia:fail("You have not created any ERLC server status channels.", nil, true)
+		-- 					return updateMenu()
+		-- 				end
+
+		-- 				local options = {}
+
+		-- 				local modified = false
+
+		-- 				for i, v in pairs(config.erlcserverstatuschannels) do
+		-- 					local channel = guild:getChannel(v.channel)
+
+		-- 					if channel then
+		-- 						table.insert(options, {
+		-- 							label = "#" .. tostring(i),
+		-- 							value = tostring(i) .. ":" .. v.channel,
+		-- 							emoji = resolvedEmojis.channel
+		-- 						})
+		-- 					else
+		-- 						table.remove(config.erlcserverstatuschannels, i)
+		-- 						modified = true
+		-- 					end
+		-- 				end
+
+		-- 				if modified then
+		-- 					modify("erlcserverstatuschannels", config.erlcserverstatuschannels)
+		-- 				end
+
+		-- 				if table.count(options) < 1 then
+		-- 					return ia:fail("You have not created any ERLC server status channels.", nil, true)
+		-- 				end
+
+		-- 				optionsSelect(ia, "Select status channel...", function(selection, cia)
+		-- 					local splitSelection = string.split(selection, ":")
+		-- 					local i = splitSelection[1]
+		-- 					local channelID = splitSelection[2]
+
+		-- 					local voiceChannel = guild:getChannel(channelID)
+
+		-- 					if voiceChannel then
+		-- 						voiceChannel:delete()
+		-- 						config.erlcserverstatuschannels[tonumber(i)] = nil
+		-- 						modify("erlcserverstatuschannels", config.erlcserverstatuschannels)
+		-- 						cia:updateDeferred(true)
+		-- 						return updateMenu()
+		-- 					else
+		-- 						cia:fail("I could not find that channel.")
+		-- 						return updateMenu()
+		-- 					end
+		-- 				end, true, options, 1, nil, true)
+		-- 			end
+		-- 		elseif key == "infractiontypes" then
+		-- 			if action == "create" then
+		-- 				ia:updateDeferred(true)
+		-- 				return updateMenu()
+		-- 			elseif action == "edit" then
+		-- 				ia:updateDeferred(true)
+		-- 				return updateMenu()
+		-- 			elseif action == "remove" then
+		-- 				ia:updateDeferred(true)
+		-- 				return updateMenu()
+		-- 			end
+		-- 		elseif key == "serverInfo" then
+		-- 			local function open(ia)
+		-- 				prompt(ia, "Server Information", {
+		-- 					{
+		-- 						question = "Server Name",
+		-- 						placeholder = "What's the name of your in-game server?",
+		-- 						style = "short",
+		-- 						required = false,
+		-- 						max = 50,
+		-- 						default = (config.serverInfo and config.serverInfo.Name) or nil
+		-- 					},
+		-- 					{
+		-- 						question = "Server Max Players",
+		-- 						placeholder = "What's the max amount of players that can join your in-game server?",
+		-- 						style = "short",
+		-- 						required = false,
+		-- 						max = 2,
+		-- 						default = (config.serverInfo and config.serverInfo.MaxPlayers) or nil
+		-- 					},
+		-- 					{
+		-- 						question = "Server Join Code",
+		-- 						placeholder = "What's the code to join your in-game server?",
+		-- 						style = "short",
+		-- 						required = false,
+		-- 						max = 10,
+		-- 						default = (config.serverInfo and config.serverInfo.JoinKey) or nil
+		-- 					}
+		-- 				}, function(mia, responses)
+		-- 					if mia then
+		-- 						config.serverInfo = config.serverInfo or {}
+		-- 						config.serverInfo.Name = responses["Server Name"]
+		-- 						config.serverInfo.MaxPlayers = responses["Server Max Players"]
+		-- 						config.serverInfo.JoinKey = responses["Server Join Code"]
+
+		-- 						if not config.serverInfo.Name and not config.serverInfo.MaxPlayers and not config.serverInfo.JoinKey then
+		-- 							config.serverInfo = "nil"
+		-- 						end
+
+		-- 						modify("serverInfo", config.serverInfo)
+		-- 						mia:updateDeferred(true)
+		-- 						updateMenu()
+		-- 					end
+		-- 				end, true)
+		-- 			end
+
+		-- 			if config.apikey then
+		-- 				confirm(ia, "Are you sure you would like to overwrite fetched server info?\n-# " .. emojis.right .. " You will have to manually update this if you modify your server.", function(confirmed, ria)
+		-- 					if confirmed then
+		-- 						open(ria)
+		-- 					end
+		-- 				end, true)
+		-- 			else
+		-- 				open(ia)
+		-- 			end
+		-- 		elseif action == "test" then
+		-- 			if key == "joinmessage" then
+		-- 				local tosend = config.joinmessage
+
+		-- 				local m = interaction.member
+		-- 				local g = guild
+
+		-- 				local keys = {
+		-- 					["member.mention"] = m.mentionString,
+		-- 					["member.name"] = m.name or m.user.globalName or m.user.username,
+		-- 					["member.username"] = m.user.username,
+		-- 					["member.id"] = m.id,
+		-- 					["guild.name"] = g.name,
+		-- 					["guild.id"] = g.id,
+		-- 					["guild.membercount"] = formatNumber(g.totalMemberCount)
+		-- 				}
+
+		-- 				tosend = (tosend and parseTable(tosend, keys)) or nil
+
+		-- 				if tosend then
+		-- 					if hasPermission(m, "BOT_DEVELOPER") then
+		-- 						tosend.components = discordia.Components():button({
+		-- 							url = "https://duckybot.xyz/support",
+		-- 							style = "link",
+		-- 							label = "Ducky Developer",
+		-- 							emoji = resolvedEmojis.developer
+		-- 						}):raw()
+		-- 					elseif hasPermission(m, "WEB_DEVELOPER") then
+		-- 						tosend.components = discordia.Components():button({
+		-- 							url = "https://duckybot.xyz/support",
+		-- 							style = "link",
+		-- 							label = "Ducky Web Developer",
+		-- 							emoji = resolvedEmojis.web
+		-- 						}):raw()
+		-- 					elseif hasPermission(m, "EXECUTIVE") then
+		-- 						tosend.components = discordia.Components():button({
+		-- 							url = "https://duckybot.xyz/support",
+		-- 							style = "link",
+		-- 							label = "Ducky Executive",
+		-- 							emoji = resolvedEmojis.executive
+		-- 						}):raw()
+		-- 					elseif hasPermission(m, "MANAGEMENT") then
+		-- 						tosend.components = discordia.Components():button({
+		-- 							url = "https://duckybot.xyz/support",
+		-- 							style = "link",
+		-- 							label = "Ducky Management",
+		-- 							emoji = resolvedEmojis.settings
+		-- 						}):raw()
+		-- 					elseif hasPermission(m, "SUPPORT") then
+		-- 						tosend.components = discordia.Components():button({
+		-- 							url = "https://duckybot.xyz/support",
+		-- 							style = "link",
+		-- 							label = "Ducky Support",
+		-- 							emoji = resolvedEmojis.support
+		-- 						}):raw()
+		-- 					elseif hasPermission(m, "DUCKY_STAFF") then
+		-- 						tosend.components = discordia.Components():button({
+		-- 							url = "https://duckybot.xyz/support",
+		-- 							style = "link",
+		-- 							label = "Ducky Staff",
+		-- 							emoji = resolvedEmojis.permission
+		-- 						}):raw()
+		-- 					elseif hasPermission(m, "QUALITY_ASSURANCE") then
+		-- 						tosend.components = discordia.Components():button({
+		-- 							url = "https://duckybot.xyz/support",
+		-- 							style = "link",
+		-- 							label = "Ducky Quality Assurance",
+		-- 							emoji = resolvedEmojis.qa
+		-- 						}):raw()
+		-- 					elseif hasPermission(m, "DOCWRITER") then
+		-- 						tosend.components = discordia.Components():button({
+		-- 							url = "https://duckybot.xyz/support",
+		-- 							style = "link",
+		-- 							label = "Ducky Docwriter",
+		-- 							emoji = resolvedEmojis.edit
+		-- 						}):raw()
+		-- 					end
+
+		-- 					local welcomechannel = config.joinchannel and guild:getChannel(config.joinchannel)
+		-- 					if welcomechannel then
+		-- 						local s, e = welcomechannel:send(tosend)
+		-- 						if s then
+		-- 							ia:success("Your test welcome message has been successfully sent to " .. welcomechannel.mentionString .. ".", nil, true)
+		-- 							return updateMenu()
+		-- 						else
+		-- 							ia:fail("The test welcome message failed to send:\n>>> ```\n" .. tostring(e) .. "```", nil, true)
+		-- 							return updateMenu()
+		-- 						end
+		-- 					else
+		-- 						ia:fail("You have not set a welcome channel.", nil, true)
+		-- 						return updateMenu()
+		-- 					end
+		-- 				else
+		-- 					ia:fail("You have not set a welcome message.", nil, true)
+		-- 					return updateMenu()
+		-- 				end
+
+		-- 				ia:updateDeferred(true)
+		-- 				return updateMenu()
+		-- 			end
+		-- 		elseif action == "role" then
+		-- 			roleSelect(ia, "Select a role...", function(id)
+		-- 				modify(key, id)
+		-- 				updateMenu()
+		-- 			end, true, 0, (other and tonumber(other)) or 1, config[key])
+		-- 		elseif action == "channel" then
+		-- 			channelSelect(ia, "Select a channel...", function(id)
+		-- 				modify(key, id)
+		-- 				updateMenu()
+		-- 			end, true, 0, (other and tonumber(other)) or 1, config[key])
+		-- 		elseif action == "mentionable" then
+		-- 			mentionableSelect(ia, "Select a mentionable...", function(id)
+		-- 				modify(key, id)
+		-- 				updateMenu()
+		-- 			end, true, 0, (other and tonumber(other)) or 1, config[key])
+		-- 		elseif action == "embed" then
+		-- 			embedEditor(ia, function(embed)
+		-- 				modify(key, embed)
+		-- 				updateMenu()
+		-- 			end, (variables[key] and variables[key].display) or nil, config[key])
+		-- 		elseif action == "embeds" then
+		-- 			multiEmbedEditor(ia, function(embeds)
+		-- 				modify(key, embeds)
+		-- 				updateMenu()
+		-- 			end, (variables[key] and variables[key].display) or nil, config[key])
+		-- 		elseif action == "message" then
+		-- 			messageEditor(ia, function(message)
+		-- 				modify(key, message)
+		-- 				updateMenu()
+		-- 			end, (variables[key] and variables[key].display) or nil, config[key])
+		-- 		elseif action == "toggle" then
+		-- 			modify(key, not config[key])
+		-- 			updateMenu(ia)
+		-- 		elseif action == "module" then
+		-- 			if moduleEnabled(key, config) then
+		-- 				remove("modules", function(v)
+		-- 					return v == key
+		-- 				end)
+		-- 			else
+		-- 				insert("modules", key)
+		-- 			end
+		-- 			updateMenu(ia)
+		-- 		elseif action == "variables" then
+		-- 			local vars = variables[key] and variables[key].display
+
+		-- 			if vars then
+		-- 				return ia:reply({
+		-- 					embed = {
+		-- 						title = emojis.json .. " Variables",
+		-- 						description = vars,
+		-- 						color = colors.blank
+		-- 					}
+		-- 				}, true)
+		-- 			else
+		-- 				return ia:fail("The `" .. tostring(key) .. "` variables could not be found.", nil, true)
+		-- 			end
+		-- 		end
+		-- 	elseif id == "page" then
+		-- 		updateMenu(ia, first or "home")
+		-- 	else
+		-- 		updateMenu(ia, id)
+		-- 	end
+		-- end)
+	end
+}

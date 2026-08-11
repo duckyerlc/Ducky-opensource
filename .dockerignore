@@ -1,0 +1,24 @@
+# Ignore local database and backup files
+*.db
+data.db
+sqlbackups/
+logs/
+*.log
+
+# Ignore node and lit dependencies
+node_modules/
+deps/
+
+# Ignore version control and editor files
+.git
+.vscode/
+.idea/
+
+# Ignore binaries
+luvi
+luvit
+lit
+
+# Ignore secrets and environment files
+secrets.lua
+.env
