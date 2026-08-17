@@ -15,7 +15,7 @@ Licensed under the [GNU Affero General Public License v3.0](LICENSE).
 
 * Private Use: You are free to use and modify the software privately, without having to release your modifications unless you choose to distribute them.
 
-* Disclose Source: If you distribute the software (or use it to provide a service), you must provide access to the source code, including any modifications you made.
+* Disclose Source: If you distribute the software or use it to provide a service (aka running a discord bot), you must provide access to the source code, including any modifications you made.
 
 * License and Copyright Notice: The license and copyright notice must accompany the software, whether you're distributing the original or a modified version.
 
